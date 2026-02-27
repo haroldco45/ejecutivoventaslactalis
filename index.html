@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejecutivo Ventas Lactalis | Vibras Positivas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        :root {
+            --lactalis-blue: #0055a4;
+            --lactalis-red: #e4002b;
+            --accent: #ff9800;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&q=80&w=1000'); 
+            background-size: cover;
+            background-attachment: fixed;
+            color: #333;
+        }
+        .header {
+            background: var(--lactalis-blue);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 5px solid var(--lactalis-red);
+        }
+        .logo { max-width: 180px; margin-bottom: 10px; }
+        #map { height: 250px; width: 90%; margin: 15px auto; border-radius: 15px; border: 2px solid var(--lactalis-blue); }
+        .container { padding: 20px; max-width: 500px; margin: auto; }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-left: 8px solid var(--lactalis-blue);
+        }
+        .select-box {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            font-size: 16px;
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat;
+            background-position: right 10px center;
+            cursor: pointer;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-catalog { background: #f8f9fa; border: 2px solid var(--lactalis-blue); color: var(--lactalis-blue); }
+        .btn-ws { background: #25D366; color: white; border: none; font-size: 18px; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+        .vibras { color: var(--accent); font-weight: bold; font-size: 14px; }
+        #clock { font-weight: bold; color: var(--lactalis-red); margin: 10px 0; }
+    </style>
+</head>
+<body>
 
+    <div class="header">
+        <img src="lactalis.PNG" alt="Lactalis Logo" class="logo">
+        <div id="clock">Cargando hora de Colombia...</div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="container">
+        <div class="card">
+            <h3 style="margin-top:0; color:var(--lactalis-blue);">📍 GESTIÓN DE VENTAS</h3>
+            <p><strong>Ubicación:</strong> Caucasia, Antioquia</p>
+            
+            <label for="gestion">¿Qué gestión deseas realizar?</label>
+            <select id="gestion" class="select-box">
+                <option value="Cotización">📄 Solicitar Cotización</option>
+                <option value="Pedido">🛒 Realizar Pedido Nuevo</option>
+                <option value="Consulta Catálogo">❓ Consulta de Productos</option>
+                <option value="Visita">🚛 Programar Visita</option>
+            </select>
+
+            <a href="lactalis.pdf" target="_blank" class="btn btn-catalog">📂 VER CATÁLOGO PDF</a>
+            <button onclick="enviarGestion()" class="btn btn-ws">📲 CONTACTAR EJECUTIVO</button>
+        </div>
+
+        <div class="footer">
+            <p>CONTACTO: CAUCASIA | WhatsApp: 3117700431</p>
+            <p class="vibras">✨ App desarrollada por Vibras Positivas ✨</p>
+            <p>© 2026 Todos los derechos reservados</p>
+        </div>
+    </div>
+
+<script>
+    // 1. Reloj en tiempo real (Colombia)
+    function updateClock() {
+        const now = new Date();
+        const options = { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        document.getElementById('clock').innerText = "🇨🇴 " + now.toLocaleTimeString('es-CO', options);
+    }
+    setInterval(updateClock, 1000);
+
+    // 2. Configuración del Mapa GPS
+    var map = L.map('map').setView([7.9789, -75.1991], 14); // Centro en Caucasia
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    var marker = L.marker([7.9789, -75.1991]).addTo(map).bindPopup("Ejecutivo Lactalis - Caucasia");
+
+    // Intentar obtener ubicación real del dispositivo
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            marker.setLatLng([lat, lng]);
+            map.setView([lat, lng], 15);
+        });
+    }
+
+    // 3. Función para enviar gestión vía WhatsApp
+    function enviarGestion() {
+        const gestion = document.getElementById('gestion').value;
+        const hora = document.getElementById('clock').innerText;
+        const lat = marker.getLatLng().lat;
+        const lng = marker.getLatLng().lng;
+        
+        const mensaje = `Hola, soy Harold de Vibras Positivas. Requiero una *${gestion}* para Lactalis.%0A%0A🕒 Hora: ${hora}%0A📍 Ubicación: https://www.google.com/maps?q=${lat},${lng}`;
+        
+        window.open(`https://wa.me/573117700431?text=${mensaje}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
