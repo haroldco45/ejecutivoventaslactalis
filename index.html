@@ -15,7 +15,8 @@
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
-            background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('https://images.unsplash.com/photo-1528498033053-40e9195d9e92?auto=format&fit=crop&q=80&w=1000'); 
+            /* Fondo alusivo a Lactalis con overlay para legibilidad */
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('https://images.unsplash.com/photo-1528498033053-40e9195d9e92?auto=format&fit=crop&q=80&w=1000'); 
             background-size: cover;
             background-attachment: fixed;
             color: #333;
@@ -28,7 +29,7 @@
             border-bottom: 5px solid var(--lactalis-red);
         }
         .logo { max-width: 180px; margin-bottom: 10px; background: white; padding: 5px; border-radius: 10px; }
-        #map { height: 200px; width: 100%; border-radius: 10px; border: 2px solid var(--lactalis-blue); margin-top: 10px; }
+        #map { height: 250px; width: 100%; margin: 10px 0; border-radius: 15px; border: 2px solid var(--lactalis-blue); }
         .container { padding: 20px; max-width: 500px; margin: auto; }
         .card {
             background: white;
@@ -36,83 +37,85 @@
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             margin-bottom: 20px;
-            border-top: 5px solid var(--lactalis-blue);
+            border-left: 8px solid var(--lactalis-blue);
         }
         .input-group { margin-bottom: 15px; }
         label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--lactalis-blue); }
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            font-size: 16px;
             box-sizing: border-box;
-            font-size: 14px;
         }
         .btn {
             display: block;
             width: 100%;
             padding: 15px;
-            margin-top: 10px;
+            margin-top: 15px;
             text-align: center;
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
+            transition: 0.3s;
             cursor: pointer;
             border: none;
         }
         .btn-catalog { background: #f8f9fa; border: 2px solid var(--lactalis-blue); color: var(--lactalis-blue); }
         .btn-ws { background: #25D366; color: white; font-size: 18px; }
-        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; background: rgba(255,255,255,0.8); }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
         .vibras { color: var(--accent); font-weight: bold; font-size: 14px; }
-        #clock { font-weight: bold; color: white; margin-top: 5px; font-size: 1.1em; }
+        #clock { font-weight: bold; color: white; margin: 5px 0; font-size: 1.1em; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <img src="lactalis.PNG" alt="Lactalis Logo" class="logo">
-        <div>CONTÁCTANOS: CAUCASIA | WhatsApp: 3164704426</div>
-        <div id="clock">Cargando hora...</div>
+        <div style="font-weight: bold;">CAUCASIA | WhatsApp: 3164704426</div>
+        <div id="clock">Cargando hora de Colombia...</div>
     </div>
 
     <div class="container">
         <div class="card">
-            <h3 style="margin-top:0; text-align:center;">📋 DATOS DEL CLIENTE</h3>
+            <h3 style="margin-top:0; color:var(--lactalis-blue); text-align: center;">📝 DATOS DEL CLIENTE</h3>
             
             <div class="input-group">
-                <label>Nombre del Cliente / Negocio:</label>
-                <input type="text" id="nombre" placeholder="Ej: Tienda La Esquina">
+                <label>Nombre / Negocio:</label>
+                <input type="text" id="nombre" placeholder="Nombre completo">
             </div>
 
             <div class="input-group">
                 <label>Dirección:</label>
-                <input type="text" id="direccion" placeholder="Calle, Carrera, Barrio">
+                <input type="text" id="direccion" placeholder="Dirección en Caucasia">
             </div>
 
             <div class="input-group">
-                <label>Celular:</label>
-                <input type="tel" id="celular" placeholder="Número de contacto">
+                <label>Celular Cliente:</label>
+                <input type="tel" id="celular" placeholder="Número del cliente">
             </div>
 
             <div class="input-group">
-                <label>Tipo de Gestión:</label>
-                <select id="gestion">
+                <label>Gestión a realizar:</label>
+                <select id="gestion" class="select-box">
                     <option value="Cotización">📄 Solicitar Cotización</option>
-                    <option value="Pedido">🛒 Realizar Pedido</option>
-                    <option value="Consulta">❓ Consulta de Catálogo</option>
+                    <option value="Pedido">🛒 Realizar Pedido Nuevo</option>
+                    <option value="Consulta Catálogo">❓ Consulta de Productos</option>
                 </select>
             </div>
 
             <div class="input-group">
-                <label>Observaciones del Pedido:</label>
-                <textarea id="obs" rows="3" placeholder="Detalles adicionales..."></textarea>
+                <label>Observaciones:</label>
+                <textarea id="obs" rows="3" placeholder="Detalles del pedido o consulta..."></textarea>
             </div>
 
-            <label>📍 Ubicación del Punto de Venta:</label>
+            <label>📍 Ubicación del Punto:</label>
             <div id="map"></div>
-            
-            <a href="lactalis.pdf" target="_blank" class="btn btn-catalog">📂 ABRIR CATÁLOGO LACTALIS (PDF)</a>
-            <button onclick="enviarPedido()" class="btn btn-ws">🚀 ENVIAR AL EJECUTIVO</button>
+            <small style="color: gray;">(Arrastra el marcador a la ubicación exacta)</small>
+
+            <a href="lactalis.pdf" target="_blank" class="btn btn-catalog">📂 VER CATÁLOGO PDF</a>
+            <button onclick="enviarGestion()" class="btn btn-ws">📲 ENVIAR A WHATSAPP</button>
         </div>
 
         <div class="footer">
@@ -130,8 +133,8 @@
     }
     setInterval(updateClock, 1000);
 
-    // 2. Mapa y Ubicación (GPS para el cliente)
-    var map = L.map('map').setView([7.9789, -75.1991], 13);
+    // 2. Configuración del Mapa GPS (Para que el cliente marque su sitio)
+    var map = L.map('map').setView([7.9789, -75.1991], 14);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     var marker = L.marker([7.9789, -75.1991], {draggable: true}).addTo(map);
 
@@ -144,8 +147,8 @@
         });
     }
 
-    // 3. Enviar a WhatsApp
-    function enviarPedido() {
+    // 3. Función para enviar gestión vía WhatsApp con datos del cliente y derechos de autor
+    function enviarGestion() {
         const nombre = document.getElementById('nombre').value;
         const direccion = document.getElementById('direccion').value;
         const celular = document.getElementById('celular').value;
@@ -156,20 +159,22 @@
         const lng = marker.getLatLng().lng;
 
         if(!nombre || !celular) {
-            alert("Por favor ingresa al menos nombre y celular.");
+            alert("Por favor ingrese el nombre y celular del cliente.");
             return;
         }
-
+        
         const mensaje = `*NUEVA GESTIÓN LACTALIS*%0A` +
                         `------------------------------%0A` +
                         `👤 *Cliente:* ${nombre}%0A` +
                         `📍 *Dirección:* ${direccion}%0A` +
                         `📱 *Celular:* ${celular}%0A` +
-                        `📝 *Gestión:* ${gestion}%0A` +
+                        `📋 *Gestión:* ${gestion}%0A` +
                         `💬 *Obs:* ${obs}%0A` +
-                        `⏰ *Hora:* ${hora}%0A%0A` +
-                        `📍 *Ubicación GPS:* https://www.google.com/maps?q=${lat},${lng}`;
-
+                        `🕒 *Hora:* ${hora}%0A%0A` +
+                        `📍 *Ubicación:* https://www.google.com/maps?q=${lat},${lng}%0A%0A` +
+                        `------------------------------%0A` +
+                        `✨ _App desarrollada por Vibras Positivas derechos de autor_ ✨`;
+        
         window.open(`https://wa.me/573164704426?text=${mensaje}`, '_blank');
     }
 </script>
